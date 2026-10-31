@@ -13,7 +13,7 @@ async function main() {
     console.error('No JDK found.');
     process.exit(1);
   }
-  const mod = await import(pathToFileURL(path.join(__dirname, '..', 'public', 'js', 'problems', 'index.js')).href);
+  const mod = await import(pathToFileURL(path.join(__dirname, '..', 'server', 'problems', 'index.js')).href);
   let failures = 0;
   for (const t of mod.TEMPLATES) {
     if (filter && !t.id.includes(filter)) continue;
