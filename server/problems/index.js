@@ -1,5 +1,5 @@
 // Registry of every problem template, plus the logic that turns a template + seed into a problem.
-import { Rng } from '../rng.js';
+import { Rng } from './rng.js';
 import { TESTKIT } from './kit.js';
 import java from './java.js';
 import trees from './trees.js';
@@ -8,8 +8,9 @@ import llrb from './llrb.js';
 import hash from './hash.js';
 import graphs from './graphs.js';
 import digraphs from './digraphs.js';
+import advanced from './advanced.js';
 
-export const TEMPLATES = [...java, ...trees, ...bst, ...llrb, ...hash, ...graphs, ...digraphs];
+export const TEMPLATES = [...java, ...trees, ...bst, ...llrb, ...hash, ...graphs, ...digraphs, ...advanced];
 
 export function templateById(id) {
   return TEMPLATES.find((t) => t.id === id);
