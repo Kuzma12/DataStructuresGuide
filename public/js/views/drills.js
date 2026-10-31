@@ -1,5 +1,6 @@
 import { TOPICS, topicById } from '../curriculum.js';
-import { DRILLS } from '../drills.js';
+import { DRILLS, setDrillLevel } from '../drills.js';
+import { modes, modeById } from '../catalog.js';
 import { store } from '../store.js';
 import { esc, normalizeAnswer } from '../ui.js';
 import { Rng, newSeed } from '../rng.js';
@@ -28,6 +29,9 @@ export default {
         return `<div class="drill-stat${filter === t.id ? ' on' : ''}"><span>${esc(t.short)}</span><b>${acc === null ? '–' : `${acc}%`}</b><small>${d ? d.attempts : 0} done</small></div>`;
       }).join('');
 
+    const mode = modeById(store.state.mode);
+    setDrillLevel(mode ? modes().indexOf(mode) + 1 : 2);
+
     const nextDrill = () => {
       const pool = DRILLS.filter((d) => filter === 'all' || d.topic === filter);
       const rng = new Rng(newSeed());
@@ -44,6 +48,7 @@ export default {
           <p class="eyebrow">Drills</p>
           <h1>Trace it before you code it</h1>
           <p class="lead">Predict what the algorithm does on a random input. Each answer comes with a step-by-step explanation. Ten in a row at high accuracy means you really understand the algorithm.</p>
+          ${mode ? `<p class="muted small">Input size follows your mode: <span class="mode-chip m-${mode.id}">${esc(mode.label)}</span> (change it on the <a href="#/practice">Practice</a> page).</p>` : ''}
         </header>
         <div class="chips" data-filters>
           <button class="chip${filter === 'all' ? ' on' : ''}" data-f="all">Mixed</button>

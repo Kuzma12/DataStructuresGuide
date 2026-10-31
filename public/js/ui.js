@@ -60,8 +60,11 @@ export function ring(pct, size = 36) {
   return `<svg class="ring" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" aria-label="${Math.round(pct)}% mastery"><circle class="ring-bg" cx="${size / 2}" cy="${size / 2}" r="${r}"/><circle class="ring-fg" cx="${size / 2}" cy="${size / 2}" r="${r}" stroke-dasharray="${c}" stroke-dashoffset="${off}"/></svg>`;
 }
 
-export function levelDots(level) {
-  return `<span class="dots" title="Difficulty ${level} of 3">${[1, 2, 3].map((i) => `<i class="${i <= level ? 'on' : ''}"></i>`).join('')}</span>`;
+const LEVELS = ['', 'Easy', 'Medium', 'Hard', 'Very hard', 'Extreme'];
+
+export function levelDots(level, withLabel = false) {
+  const dots = [1, 2, 3, 4, 5].map((i) => `<i class="${i <= level ? 'on' : ''}"></i>`).join('');
+  return `<span class="dots lv${level}" title="${LEVELS[level]} (level ${level} of 5)">${dots}${withLabel ? `<b>${LEVELS[level]}</b>` : ''}</span>`;
 }
 
 /** Normalizes a typed answer: "5, 3 1" -> "5 3 1". Keeps letters, digits, minus signs and dots. */

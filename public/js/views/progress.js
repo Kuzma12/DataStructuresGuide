@@ -1,8 +1,8 @@
 import { TOPICS, topicMastery } from '../curriculum.js';
-import { templatesFor } from '../problems/index.js';
+import { templatesFor } from '../catalog.js';
 import { store, masteryLabel } from '../store.js';
 import { esc, ring, levelDots, toast } from '../ui.js';
-import { health } from '../api.js';
+import { health, resetServerProgress } from '../api.js';
 
 export default {
   async render(el) {
@@ -65,6 +65,7 @@ export default {
     el.querySelector('[data-a="reset"]').addEventListener('click', () => {
       if (!confirm('Erase all progress, drafts and stats in this browser? This cannot be undone.')) return;
       store.reset();
+      resetServerProgress();
       document.dispatchEvent(new Event('progress-changed'));
       this.render(el);
     });

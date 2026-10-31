@@ -2,6 +2,13 @@
 import { BST, LLRB, preorder, inorder, postorder, levelorder, countRed, blackHeight, to23, levels23, applyOp, evalPostfix, fmtNum, infix, hashIndex, ChainTable, buildGraph, dfsTrace, bfsTrace, dfoTrace, hasDirectedCycle } from './ds.js';
 import { treeSvg, tree23Svg, graphSvg, adjListHtml, chainsHtml } from './viz.js';
 
+// Difficulty level 1..5 (from the current mode) grows or shrinks the random inputs.
+let LV = 2;
+export function setDrillLevel(level) {
+  LV = Math.max(1, Math.min(5, level));
+}
+const scale = (n, max = 13) => Math.max(3, Math.min(max, n + (LV - 2) * 2));
+
 const list = (a) => a.join(' ');
 const show = (a) => `<code>${a.join(', ')}</code>`;
 
@@ -25,7 +32,7 @@ function evalTree(x) {
 }
 
 function randomGraph(rng, directed, acyclic) {
-  const V = rng.int(5, 7);
+  const V = scale(rng.int(5, 7), 10);
   const perm = rng.shuffle([...Array(V).keys()]);
   // A random spanning tree keeps every vertex reachable (so traces are never trivial),
   // then a few extra edges add cycles / cross edges. Edge order is shuffled because it
@@ -99,7 +106,7 @@ export const DRILLS = [
     topic: 'java',
     title: 'Evaluate postfix with a stack',
     generate(rng) {
-      const tree = randomExpr(rng, 3);
+      const tree = randomExpr(rng, LV <= 1 ? 2 : LV >= 4 ? 4 : 3);
       const tokens = postorder(tree);
       const { value, steps } = evalPostfix(tokens);
       return {
@@ -116,7 +123,7 @@ export const DRILLS = [
     topic: 'trees',
     title: 'Traversal order',
     generate(rng) {
-      const keys = rng.distinct(rng.int(6, 9), 1, 60);
+      const keys = rng.distinct(scale(rng.int(6, 9)), 1, 60);
       const t = new BST(keys);
       const kind = rng.pick(['preorder', 'inorder', 'postorder', 'level order']);
       const fn = { preorder, inorder, postorder, 'level order': levelorder }[kind];
@@ -158,7 +165,7 @@ export const DRILLS = [
     topic: 'bst',
     title: 'Build a BST',
     generate(rng) {
-      const keys = rng.distinct(rng.int(6, 8), 1, 50);
+      const keys = rng.distinct(scale(rng.int(6, 8)), 1, 50);
       const { t, level } = levelWithTree(keys);
       return {
         prompt: `Insert <code>${keys.join(', ')}</code> (in that order) into an empty BST. Give its <b>level order</b>.`,
@@ -174,7 +181,7 @@ export const DRILLS = [
     topic: 'bst',
     title: 'floor / ceiling / rank / select',
     generate(rng) {
-      const keys = rng.distinct(rng.int(7, 10), 1, 60);
+      const keys = rng.distinct(scale(rng.int(7, 10)), 1, 60);
       const t = new BST(keys);
       const sorted = [...keys].sort((a, b) => a - b);
       const op = rng.pick(['floor', 'ceiling', 'rank', 'select']);
@@ -214,7 +221,7 @@ export const DRILLS = [
       let t;
       let target;
       for (;;) {
-        keys = rng.distinct(rng.int(7, 9), 1, 60);
+        keys = rng.distinct(scale(rng.int(7, 9)), 1, 60);
         t = new BST(keys);
         const two = [];
         const walk = (x) => {
@@ -246,7 +253,7 @@ export const DRILLS = [
     topic: 'llrb',
     title: 'LLRB insertion',
     generate(rng) {
-      const keys = rng.distinct(rng.int(5, 8), 1, 40);
+      const keys = rng.distinct(scale(rng.int(5, 8), 12), 1, 40);
       const t = new LLRB();
       const logs = keys.map((k) => ({ k, log: t.put(k) }));
       const kind = rng.pick(['root', 'red', 'level', 'black']);
@@ -270,7 +277,7 @@ export const DRILLS = [
     topic: 'llrb',
     title: 'See the 2-3 tree',
     generate(rng) {
-      const keys = rng.distinct(rng.int(6, 10), 1, 50);
+      const keys = rng.distinct(scale(rng.int(6, 10)), 1, 50);
       const t = new LLRB(keys);
       const lv = levels23(to23(t.root));
       const kind = rng.pick(['root', 'threes']);
@@ -310,7 +317,7 @@ export const DRILLS = [
     title: 'Chains after insertion',
     generate(rng) {
       const m = rng.int(3, 5);
-      const keys = rng.distinct(rng.int(6, 9), 0, 40);
+      const keys = rng.distinct(scale(rng.int(6, 9)), 0, 40);
       const table = new ChainTable(m, 99, false);
       for (const k of keys) table.put(k);
       const i = rng.pick(table.chains.map((c, j) => j).filter((j) => table.chains[j].length > 0));

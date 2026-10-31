@@ -15,6 +15,7 @@ const blank = () => ({
   set: null,        // { items: [{templateId, seed}], index }
   recent: [],       // last problems opened
   theme: null,
+  mode: 'medium',   // difficulty mode id
 });
 
 let state = load();
@@ -71,7 +72,12 @@ export const store = {
     save();
   },
 
-  recordRun(templateId, seed, { allPassed }) {
+  setMode(mode) {
+    state.mode = mode;
+    save();
+  },
+
+  recordRun(templateId, seed, { allPassed, clean }) {
     const p = (state.problems[templateId] ||= { attempts: 0, runs: 0, solved: 0, clean: 0, seeds: [] });
     p.runs++;
     if (!p.seeds.includes(seed)) {
@@ -85,7 +91,7 @@ export const store = {
       if (!p.solvedSeeds.includes(seed)) {
         p.solvedSeeds.push(seed);
         p.solved++;
-        if (!state.peeked[solvedKey] && (state.hints[solvedKey] || 0) < 3) p.clean++;
+        if (clean ?? (!state.peeked[solvedKey] && (state.hints[solvedKey] || 0) < 3)) p.clean++;
         firstSolve = true;
       }
     }
