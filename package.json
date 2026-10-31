@@ -1,0 +1,13 @@
+{
+  "name": "data-structures-guide",
+  "version": "1.0.0",
+  "description": "Local study site for Data Structures II: lessons, labs, drills and auto-checked Java practice problems.",
+  "private": true,
+  "scripts": {
+    "start": "node server/server.js",
+    "verify": "node tools/verify.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
