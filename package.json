@@ -1,11 +1,13 @@
 {
   "name": "data-structures-guide",
-  "version": "1.0.0",
-  "description": "Local study site for Data Structures II: lessons, labs, drills and auto-checked Java practice problems.",
+  "version": "2.0.0",
+  "description": "Interactive study platform for Data Structures II in Java: animated walkthroughs, simple-words lessons, tracing drills, and auto-graded problems across five difficulty modes.",
   "private": true,
   "scripts": {
     "start": "node server/server.js",
-    "verify": "node tools/verify.js"
+    "verify": "node tools/verify.js",
+    "verify:modes": "node tools/verify-modes.mjs",
+    "smoke": "node tools/smoke.mjs"
   },
   "engines": {
     "node": ">=18"
