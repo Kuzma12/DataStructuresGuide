@@ -73,7 +73,7 @@ It runs entirely locally. There are no accounts, no cloud, no build step, and no
 **Run**
 
 ```bash
-git clone https://github.com/<your-username>/DataStructuresGuide.git
+git clone https://github.com/Kuzma12/DataStructuresGuide.git
 cd DataStructuresGuide
 npm start
 ```
