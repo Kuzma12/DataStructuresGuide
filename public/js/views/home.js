@@ -1,7 +1,7 @@
 import { TOPICS, topicMastery } from '../curriculum.js';
 import { store, masteryLabel } from '../store.js';
 import { ring, esc } from '../ui.js';
-import { templatesFor } from '../problems/index.js';
+import { templatesFor, modeById } from '../catalog.js';
 import { DRILLS } from '../drills.js';
 
 /** The single most useful next step: finish reading, then drill, then code, topic by topic. */
@@ -24,6 +24,7 @@ export default {
     const totalSolved = Object.values(store.state.problems).reduce((a, p) => a + p.solved, 0);
     const totalDrills = Object.values(store.state.drills).reduce((a, d) => a + d.attempts, 0);
     const streak = store.streak();
+    const mode = modeById(store.state.mode);
     const cards = TOPICS.map((t) => {
       const m = topicMastery(t);
       const bar = (key, label) => {
@@ -54,6 +55,13 @@ export default {
         <p class="lead">Lessons that start from the basics, labs that show what the code does, tracing drills, and an unlimited supply of auto-checked Java problems for the skills behind every weekly assignment.</p>
       </section>
 
+      <div class="path-strip">
+        <a href="#/watch"><span>1</span><b>Watch</b><small>See the code run as an animation</small></a>
+        <a href="#/learn/method"><span>2</span><b>Learn</b><small>Short lessons in simple words</small></a>
+        <a href="#/drills"><span>3</span><b>Trace</b><small>Predict what the algorithm does</small></a>
+        <a href="#/practice"><span>4</span><b>Code</b><small>Real Java, checked by real tests</small></a>
+      </div>
+
       <a class="next-card" href="${next.href}">
         <span class="pill">${next.kind}</span>
         <div><b>${esc(next.label)}</b><span class="muted">${esc(next.detail)}</span></div>
@@ -61,6 +69,7 @@ export default {
       </a>
 
       <div class="stats">
+        <div><b class="mode-chip m-${mode ? mode.id : 'medium'}">${mode ? esc(mode.label) : 'Medium'}</b><span>difficulty mode · <a href="#/practice">change</a></span></div>
         <div><b>${streak}</b><span>day streak</span></div>
         <div><b>${totalSolved}</b><span>problems solved</span></div>
         <div><b>${totalDrills}</b><span>drills traced</span></div>
